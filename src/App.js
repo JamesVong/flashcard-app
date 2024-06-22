@@ -7,6 +7,7 @@ import Flashcards from './Components/Flashcards.js';
 import FrogotPage from './Components/Frogot.js';
 import Register from './Components/Register.js';
 import Login from './Components/Login.js';
+import Create from './Components/Create.js';
 import './App.css';
 
 function App() {
@@ -34,6 +35,9 @@ function App() {
             </Route>
             <Route path="/login">
                 <Login/>
+            </Route>
+            <Route path="/create">
+                <Create/>
             </Route>
           </Switch>
         </BrowserRouter>

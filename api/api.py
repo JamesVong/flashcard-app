@@ -83,3 +83,39 @@ def frogotPassword():
             return redirect('/forgot')
     else:
         return {'loggedIn':True}
+
+@app.route("/api/decks",methods=["GET"])
+def getDecks():
+    uid = session["uid"]
+    return [
+        {
+            "title":"Sortdfslkfsldkflsdk flksj lkfsjlking Algorithms",
+            "description":"\n\n\n\n\nfndlskjfdsk fsd flksd jflksdj lfksd jflksd lfks djflkd jlsj fls dkfls djfls jfls dfsd lsdj flsk dlk ls flsdk jfk sldf slkd flskd flsk fjlsf jlskdfjlskd fjlskfj lsk djfwjeo fjwf f f  f f f f f \n f d f f f f f f f  f f s first semester content including selectionsdfsdfksdkflsflsdkfs;ldfsldfsldfsgkgkkgkgkgkgkgkgkkgkgkgkgkgkgkgkgkgkgkgkgkkgkggkgkgkgkgkgkgkgkgkgkgkgkgkgfgjfkgjfkgjfkgjfkgjkjgkfjdkfgdkjgldkfjgldkjgdfgjdkfgdflgdkfgdflkgdflkgjdfkgjkl sort and insertion sort.sdfosdfjslk djflksjflksjdlfkjlskdjfksjd kfjslkdj flskj lfjls kdjlf sldj flfsldjkfljsdfjsd fsfdkfjskjdf kjskd jfskjd fkj",
+            "length":11,
+            "date_created":"Yesterday"
+        },
+        {
+            "title":"Sorting Algorithms",
+            "description":"Covdsfsd;fsdferfwkfjwefkweflkefeff f f f f  f f f\n \n \n\n\n\n\nfndlskjfdsk fsd flksd jflksdj lfksd jflksd lfks djflkd jlsj fls dkfls djfls jfls dfsd lsdj flsk dlk ls flsdk jfk sldf slkd flskd flsk fjlsf jlskdfjlskd fjlskfj lsk djfwjeo fjwf f f  f f f f f \n f d f f f f f f f  f f s first semester content including selectionsdfsdfksdkflsflsdkfs;ldfsldfsldfsgkgkkgkgkgkgkgkgkkgkgkgkgkgkgkgkgkgkgkgkgkkgkggkgkgkgkgkgkgkgkgkgkgkgkgkgfgjfkgjfkgjfkgjfkgjkjgkfjdkfgdkjgldkfjgldkjgdfgjdkfgdflgdkfgdflkgdflkgjdfkgjkl sort and insertion sort.sdfosdfjslk djflksjflksjdlfkjlskdjfksjd kfjslkdj flskj lfjls kdjlf sldj flfsldjkfljsdfjsd fsfdkfjskjdf kjskd jfskjd fkj",
+            "length":12,
+            "date_created":"Yesterday"
+        },
+        {
+            "title":"Sorting Algorithms",
+            "description":"Covers first semester content including selection sort and insertion sort.",
+            "length":12,
+            "date_created":"Yesterday"
+        },
+        {
+            "title":"Sorting Algorithms",
+            "description":"Covers first semester content including selection sort and insertion sort.",
+            "length":12,
+            "date_created":"Yesterday"
+        },
+        {
+            "title":"Sorting Algorithms",
+            "description":"Covers first semester content including selection sort and insertion sort.",
+            "length":12,
+            "date_created":"Yesterday"
+        }
+    ]
