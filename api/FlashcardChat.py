@@ -7,10 +7,10 @@ def get_prompt(file_path):
 class FlashcardChat():
     def __init__(self):
         create_prompt = get_prompt("./CreatePrompt.txt")
-        self.create_flashcard_bot = ChatBot("gpt-4o", create_prompt)
+        self.create_flashcard_bot = ChatBot("claude-3-5-sonnet-20240620", create_prompt)
         
         feedback_prompt = get_prompt("./FeedbackPrompt.txt")
-        self.feedback_bot = ChatBot("gpt-4o", feedback_prompt)
+        self.feedback_bot = ChatBot("claude-3-5-sonnet-20240620", feedback_prompt)
 
     def createFlashcard(self, text_input):
         return self.create_flashcard_bot.chat(text_input, False)
