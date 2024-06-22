@@ -1,24 +1,17 @@
-# models.py
+# DbModel.py
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-class User(Base):
-    __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(100), nullable=False)
-    decks = relationship('Deck', back_populates='user')
-
 class Deck(Base):
     __tablename__ = 'decks'
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    uid = Column(String(128), nullable=False)  # Firebase UID
     name = Column(String(100), nullable=False)
     description = Column(Text)
     last_edited = Column(DateTime)
-    user = relationship('User', back_populates='decks')
     cards = relationship('Card', back_populates='deck')
     conversations = relationship('Conversation', back_populates='deck')
 

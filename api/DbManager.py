@@ -1,8 +1,8 @@
-from sqlalchemy import URL, create_engine
+from sqlalchemy import URL, create_engine, func
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
-from DbModels import Base, User, Deck, Card, Conversation, Chat
+from DbModels import Base, Deck, Card, Conversation, Chat
 from datetime import datetime
 
 load_dotenv()
@@ -24,28 +24,30 @@ class DbManager:
     def create_tables(self):
         Base.metadata.create_all(self.engine)
 
-    def add_user(self, name):
+    # Deck methods
+    def add_deck(self, uid, name, description):
         with self.Session() as session:
-            new_user = User(name=name)
-            session.add(new_user)
-            session.commit()
-            return new_user.id
-
-    def get_user(self, user_id):
-        with self.Session() as session:
-            return session.query(User).filter(User.id == user_id).first()
-
-    def add_deck(self, user_id, name, description):
-        with self.Session() as session:
-            new_deck = Deck(user_id=user_id, name=name, description=description)
+            new_deck = Deck(uid=uid, name=name, description=description, last_edited=datetime.utcnow())
             session.add(new_deck)
             session.commit()
             return new_deck.id
-
-    def get_deck(self, deck_id):
+    
+    def get_decks_with_count(self, uid):
         with self.Session() as session:
-            return session.query(Deck).filter(Deck.id == deck_id).first()
+            decks_with_count = session.query(
+                Deck,
+                func.count(Card.id).label('card_count')
+            ).outerjoin(Card).filter(Deck.uid == uid).group_by(Deck.id).all()
 
+            return [{
+                'id': deck.id,
+                'name': deck.name,
+                'description': deck.description,
+                'last_edited': deck.last_edited,
+                'card_count': card_count
+            } for deck, card_count in decks_with_count]
+
+    # Card methods
     def add_card(self, deck_id, concept, detail):
         with self.Session() as session:
             new_card = Card(deck_id=deck_id, concept=concept, detail=detail)
@@ -53,9 +55,20 @@ class DbManager:
             session.commit()
             return new_card.id
 
-    def get_card(self, card_id):
+    def get_cards_by_deck_id(self, deck_id, uid):
         with self.Session() as session:
-            return session.query(Card).filter(Card.id == card_id).first()
+            deck = session.query(Deck).filter(Deck.id == deck_id, Deck.uid == uid).first()
+            if not deck:
+                return None
+            
+            cards = session.query(Card).filter(Card.deck_id == deck_id).all()
+            return [{
+                'id': card.id,
+                'concept': card.concept,
+                'detail': card.detail,
+                'attempts': card.attempts,
+                'correct_attempts': card.correct_attempts
+            } for card in cards]
 
     # Conversation methods
     def add_conversation(self, deck_id, title, characters):
@@ -68,27 +81,6 @@ class DbManager:
     def get_conversation(self, conversation_id):
         with self.Session() as session:
             return session.query(Conversation).filter(Conversation.id == conversation_id).first()
-
-    def update_conversation(self, conversation_id, title=None, characters=None):
-        with self.Session() as session:
-            conversation = session.query(Conversation).filter(Conversation.id == conversation_id).first()
-            if conversation:
-                if title:
-                    conversation.title = title
-                if characters:
-                    conversation.characters = characters
-                session.commit()
-                return True
-            return False
-
-    def delete_conversation(self, conversation_id):
-        with self.Session() as session:
-            conversation = session.query(Conversation).filter(Conversation.id == conversation_id).first()
-            if conversation:
-                session.delete(conversation)
-                session.commit()
-                return True
-            return False
 
     def get_conversations_by_deck(self, deck_id):
         with self.Session() as session:
@@ -105,25 +97,6 @@ class DbManager:
     def get_chat(self, chat_id):
         with self.Session() as session:
             return session.query(Chat).filter(Chat.id == chat_id).first()
-
-    def update_chat(self, chat_id, message):
-        with self.Session() as session:
-            chat = session.query(Chat).filter(Chat.id == chat_id).first()
-            if chat:
-                chat.message = message
-                chat.time = datetime.utcnow()
-                session.commit()
-                return True
-            return False
-
-    def delete_chat(self, chat_id):
-        with self.Session() as session:
-            chat = session.query(Chat).filter(Chat.id == chat_id).first()
-            if chat:
-                session.delete(chat)
-                session.commit()
-                return True
-            return False
 
     def get_chats_by_conversation(self, conversation_id):
         with self.Session() as session:

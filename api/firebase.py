@@ -1,6 +1,8 @@
 import os
 import pyrebase
+from dotenv import load_dotenv
 
+load_dotenv()
 
 config={
   "apiKey": os.getenv("APIKEY"),

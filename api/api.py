@@ -1,8 +1,11 @@
 import time
-from flask import Flask, redirect, request, session
+from flask import Flask, redirect, request, session, jsonify
 from firebase import auth
 from flask_cors import CORS
 from flask_session import Session
+
+from DbManager import DbManager
+from FlashcardChat import FlashcardChat
 
 app = Flask(__name__, static_folder='../build', static_url_path='/')
 
@@ -47,7 +50,7 @@ def login():
             session["name"] = user["displayName"] or email
             return redirect('/')
         except Exception as e:
-            return redirect('/login')
+            return redirect('/api/login')
     else:
         if session.get("user",False):
             return {'loggedIn':True}
@@ -60,18 +63,19 @@ def register():
         email=result["email"]
         password=result["pass"]
         password2=result["pass2"]
-        if password!=password2: return redirect('/register')
+        if password!=password2: return redirect('/api/register')
         try:
             user = auth.create_user_with_email_and_password(email, password)
             auth.send_email_verification(user['idToken'])
-            return redirect('/login')	
+            return redirect('/api/login')	
         except Exception as e:
-            return redirect('/register')
+            print(e)
+            return redirect('/api/register')
     else:
         return {'loggedIn':True}
 
 @app.route("/api/forgot",methods=["POST","GET"])
-def frogotPassword():
+def forgotPassword():
     if request.method =="POST":
         result=request.form
         email=result["email"]
@@ -84,38 +88,49 @@ def frogotPassword():
     else:
         return {'loggedIn':True}
 
-@app.route("/api/decks",methods=["GET"])
-def getDecks():
-    uid = session["uid"]
-    return [
-        {
-            "title":"Sortdfslkfsldkflsdk flksj lkfsjlking Algorithms",
-            "description":"\n\n\n\n\nfndlskjfdsk fsd flksd jflksdj lfksd jflksd lfks djflkd jlsj fls dkfls djfls jfls dfsd lsdj flsk dlk ls flsdk jfk sldf slkd flskd flsk fjlsf jlskdfjlskd fjlskfj lsk djfwjeo fjwf f f  f f f f f \n f d f f f f f f f  f f s first semester content including selectionsdfsdfksdkflsflsdkfs;ldfsldfsldfsgkgkkgkgkgkgkgkgkkgkgkgkgkgkgkgkgkgkgkgkgkkgkggkgkgkgkgkgkgkgkgkgkgkgkgkgfgjfkgjfkgjfkgjfkgjkjgkfjdkfgdkjgldkfjgldkjgdfgjdkfgdflgdkfgdflkgdflkgjdfkgjkl sort and insertion sort.sdfosdfjslk djflksjflksjdlfkjlskdjfksjd kfjslkdj flskj lfjls kdjlf sldj flfsldjkfljsdfjsd fsfdkfjskjdf kjskd jfskjd fkj",
-            "length":11,
-            "date_created":"Yesterday"
-        },
-        {
-            "title":"Sorting Algorithms",
-            "description":"Covdsfsd;fsdferfwkfjwefkweflkefeff f f f f  f f f\n \n \n\n\n\n\nfndlskjfdsk fsd flksd jflksdj lfksd jflksd lfks djflkd jlsj fls dkfls djfls jfls dfsd lsdj flsk dlk ls flsdk jfk sldf slkd flskd flsk fjlsf jlskdfjlskd fjlskfj lsk djfwjeo fjwf f f  f f f f f \n f d f f f f f f f  f f s first semester content including selectionsdfsdfksdkflsflsdkfs;ldfsldfsldfsgkgkkgkgkgkgkgkgkkgkgkgkgkgkgkgkgkgkgkgkgkkgkggkgkgkgkgkgkgkgkgkgkgkgkgkgfgjfkgjfkgjfkgjfkgjkjgkfjdkfgdkjgldkfjgldkjgdfgjdkfgdflgdkfgdflkgdflkgjdfkgjkl sort and insertion sort.sdfosdfjslk djflksjflksjdlfkjlskdjfksjd kfjslkdj flskj lfjls kdjlf sldj flfsldjkfljsdfjsd fsfdkfjskjdf kjskd jfskjd fkj",
-            "length":12,
-            "date_created":"Yesterday"
-        },
-        {
-            "title":"Sorting Algorithms",
-            "description":"Covers first semester content including selection sort and insertion sort.",
-            "length":12,
-            "date_created":"Yesterday"
-        },
-        {
-            "title":"Sorting Algorithms",
-            "description":"Covers first semester content including selection sort and insertion sort.",
-            "length":12,
-            "date_created":"Yesterday"
-        },
-        {
-            "title":"Sorting Algorithms",
-            "description":"Covers first semester content including selection sort and insertion sort.",
-            "length":12,
-            "date_created":"Yesterday"
-        }
-    ]
+db_manager = DbManager()
+db_manager.create_tables()
+flashcard_chat = FlashcardChat()
+
+@app.route('/api/deck', methods=['POST'])
+def create_deck():
+    if not session.get("uid"):
+        return jsonify({'error': 'User not logged in'}), 401
+    
+    data = request.json
+    if not data or 'name' not in data or 'description' not in data or 'input' not in data:
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    # Create the deck
+    deck_id = db_manager.add_deck(session["uid"], data['name'], data['description'])
+
+    # Generate flashcards using Claude 3.5 API
+    flashcards_text = flashcard_chat.createFlashcard(data['input'])
+    
+    # Process the flashcards and add them to the deck
+    flashcards = flashcards_text.split('\n\n')
+    for flashcard in flashcards:
+        if '|||' in flashcard:
+            concept, detail = flashcard.split('|||')
+            db_manager.add_card(deck_id, concept.strip(), detail.strip())
+
+    return jsonify({
+        'message': 'Deck created successfully',
+        'deck_id': deck_id
+    }), 201
+
+@app.route('/api/decks', methods=['GET'])
+def get_user_decks():
+    if not session.get("uid"):
+        return jsonify({'error': 'User not logged in'}), 401
+    decks = db_manager.get_decks_with_count(session["uid"])
+    return jsonify(decks)
+
+@app.route('/api/deck/<int:deck_id>/cards', methods=['GET'])
+def get_deck_cards(deck_id):
+    if not session.get("uid"):
+        return jsonify({'error': 'User not logged in'}), 401
+    cards = db_manager.get_cards_by_deck_id(deck_id, session["uid"])
+    if cards is None:
+        return jsonify({'error': 'Deck not found or access denied'}), 404
+    return jsonify(cards)
