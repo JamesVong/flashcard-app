@@ -6,7 +6,7 @@ function FrogotPage(){
         <div className="flex min-h-full items-center flex-col justify-center px-6 py-12 lg:px-8">
             <div className="w-full bg-slate-100 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 ">
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6 " action="/api/frogot" method="POST">
+                <form className="space-y-6 " action="/api/forgot" method="POST">
                         
                             <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
                             <div className="mt-2">

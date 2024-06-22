@@ -18,7 +18,7 @@ function Login(){
                             <div class="flex items-center justify-between">
                                 <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
                                 <div class="text-sm">
-                                    <a href="/frogot" class="font-semibold text-black-200 hover:text-amber-200">Forgot password?</a>
+                                    <a href="/forgot" class="font-semibold text-black-200 hover:text-amber-200">Forgot password?</a>
                                 </div>
                             </div>
                             <div class="mt-2">

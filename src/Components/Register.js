@@ -1,7 +1,8 @@
 import React from 'react';
 
 function Register(){
-
+    const msg = new URLSearchParams(window.location.search).get('message')
+    console.log(msg);
     return (
         <div className="flex min-h-full items-center flex-col justify-center px-6 py-12 lg:px-8">
           <div className="w-full bg-slate-100 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 ">
@@ -19,7 +20,7 @@ function Register(){
                     <div className="flex items-center justify-between">
                       <label for="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
                       <div className="text-sm">
-                        <a href="/frogot" className="font-semibold text-black hover:text-amber-200">Forgot password?</a>
+                        <a href="/forgot" className="font-semibold text-black hover:text-amber-200">Forgot password?</a>
                       </div>
                     </div>
                     <div className="mt-2">

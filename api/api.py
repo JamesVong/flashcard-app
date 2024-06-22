@@ -52,7 +52,7 @@ def login():
             session["name"] = user["displayName"] or email
             return redirect('/')
         except Exception as e:
-            return {'loggedIn':False,'message':str(e)}
+            return redirect('/login')
     else:
         if session.get("user",False):
             return {'loggedIn':True}
@@ -65,17 +65,17 @@ def register():
         email=result["email"]
         password=result["pass"]
         password2=result["pass2"]
-        if password!=password2: return {'loggedIn':False,'message':"Passwords don't match."}
+        if password!=password2: return redirect('/register')
         try:
             user = auth.create_user_with_email_and_password(email, password)
             auth.send_email_verification(user['idToken'])
-            return {'loggedIn':False, 'message':"Check Email for response validation"}	
+            return redirect('/login')	
         except Exception as e:
-            return {'loggedIn':False,'message':str(e)}
+            return redirect('/register')
     else:
         return {'loggedIn':True}
 
-@app.route("/api/frogot",methods=["POST","GET"])
+@app.route("/api/forgot",methods=["POST","GET"])
 def frogotPassword():
     if request.method =="POST":
         result=request.form
@@ -83,8 +83,8 @@ def frogotPassword():
         try:
             #send recovery email
             auth.send_password_reset_email(email)
-            return {'loggedIn':False}	
+            return redirect('/login')
         except Exception as e:
-            return {'loggedIn':False,'message':str(e)}
+            return redirect('/forgot')
     else:
         return {'loggedIn':True}
