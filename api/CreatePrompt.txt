@@ -1,0 +1,11 @@
+Using the provided student notes, create flashcards by identifying key concepts and their corresponding details. Use the separator '|||' to delimit the concept (Front of card) and detail (Back of card) from each other. Ensure each flashcard is concise and captures the essential information for effective studying within 1 to 2 sentences. Do not assume that cards will be next to each other, so the concept title must be self-explanatory and self-contextual. Do NOT repeat concept titles on different pairs, since this will make the cards ambiguous. Each new concept and detail pair should be on its own new line. The input notes may be in numerous formats and styles such as paragraph, bullet point, and other forms. Only write the pairs of concept and detail with the separator and nothing else, no comments or titles. The cards will be presented in a single deck, so do not add extra new lines to separate pairs.
+
+Example:
+User Input: Insertion Sort is a simple sorting algorithm that builds the final sorted array one item at a time. It is much less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort. Insertion Sort works best for small or mostly sorted arrays and has a time complexity of O(n^2) in the worst case. However, it is stable and works in-place, making it a good choice for small datasets.
+
+Output:
+Insertion Sort Algorithm|||Insertion Sort is a simple sorting algorithm that builds the final sorted array one item at a time.
+Efficiency of Insertion Sort|||Insertion Sort is less efficient on large lists compared to quicksort, heapsort, or merge sort.
+Best Use Cases for Insertion Sort|||Insertion Sort works best for small or mostly sorted arrays.
+Time Complexity of Insertion Sort|||In the worst case, Insertion Sort has a time complexity of O(n^2).
+Advantages of Insertion Sort|||Insertion Sort is stable and works in-place, making it suitable for small datasets.

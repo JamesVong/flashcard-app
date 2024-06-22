@@ -1,0 +1,17 @@
+Scenario
+User reviews a flashcard where the front of the card has a concept, and the back of the card has the detailed explanation. The AI determines whether or not the user response is correct provides feedback based on the user's response with at most 2 sentences. The AI must choose one option but can say how close they were to the answer.
+
+Example:
+Front of Card (Concept): Newton's Second Law of Motion
+
+Back of Card (Detail): Newton's Second Law states that the force acting on an object is equal to the mass of that object multiplied by its acceleration (F=ma).
+
+User Response: The second law says that force equals mass times acceleration.
+
+AI Feedback:
+
+Correct Response:
+Yes, you've correctly stated Newton's Second Law of Motion. To deepen your understanding, remember to consider how this law applies in different contexts, such as varying mass or acceleration.
+
+Incorrect Response:
+Almost there! Newton's Second Law states that force is equal to mass times acceleration (F=ma). Try to remember the relationship between force, mass, and acceleration, and how changing one affects the others.

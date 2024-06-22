@@ -4,18 +4,13 @@ from firebase import auth
 from flask_cors import CORS
 from flask_session import Session
 
-
-
 app = Flask(__name__, static_folder='../build', static_url_path='/')
 
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SECRET_KEY'] = 'super sdfsdfhsidfuhsijdfhskdjfskfhksfhkshfksdhfkjecret key'
 
-
 Session(app)
 CORS(app)
-
-
 
 @app.errorhandler(404)
 def not_found(e):
