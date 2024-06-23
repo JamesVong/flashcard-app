@@ -43,6 +43,9 @@ class Quiz extends Component {
     this.setState(prevState => {
       const newSelected = Math.max(prevState.selected - 1, 0);
       return {
+        text:"",
+        feedback:"",
+        color:"highlight",
         selected: newSelected,
         content: prevState.cards[newSelected].concept,
       };
@@ -53,6 +56,9 @@ class Quiz extends Component {
     this.setState(prevState => {
       const newSelected = Math.min(prevState.selected + 1, prevState.cards.length - 1);
       return {
+        text:"",
+        feedback:"",
+        color:"highlight",
         selected: newSelected,
         content: prevState.cards[newSelected].concept,
       };
@@ -96,8 +102,8 @@ class Quiz extends Component {
             className="flippable flex flex-col md:w-[750px] md:h-[415px] sm:w-[475px] sm:h-[275px] bg-highlight shadow bg-opacity-35 p-8"
           >
             <h2 className="text-center text-2xl">{content}</h2>
-            <textarea rows={6} value={this.state.text} placeholder="Type your answer and click to submit." className="text-left w-full bg-highlight bg-opacity-50 text-base mt-4" onChange={(event) => this.setState({ text: event.target.value })} />
-            <div onClick={this.submit} className={`flex flex-col text-left mt-4 text-base w-full rounded bg-opacity-50 bg-${this.state.color} cursor-pointer`}>Feedback:
+            <textarea rows={6} value={this.state.text} placeholder="Type your answer and click to submit." className="text-left w-full bg-highlight bg-opacity-50 text-base mt-4 p-4 rounded" onChange={(event) => this.setState({ text: event.target.value })} />
+            <div onClick={this.submit} className={`flex flex-col text-left mt-4 text-base w-full rounded bg-opacity-50 bg-${this.state.color} cursor-pointer p-4`}>Feedback:
               <p>{this.state.feedback}</p>
             </div>
           </div>
