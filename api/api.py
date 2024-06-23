@@ -55,7 +55,7 @@ def login():
             session["name"] = user["displayName"] or email
             return redirect('/')
         except Exception as e:
-            return redirect('/api/login')
+            return redirect('/login')
     else:
         if session.get("user",False):
             return {'loggedIn':True}
@@ -75,7 +75,7 @@ def register():
             return redirect('/api/login')	
         except Exception as e:
             print(e)
-            return redirect('/api/register')
+            return redirect('/register')
     else:
         return {'loggedIn':True}
 

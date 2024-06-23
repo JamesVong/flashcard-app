@@ -103,11 +103,12 @@ class Quiz extends Component {
           >
             <h2 className="text-center text-2xl">{content}</h2>
             <textarea rows={6} value={this.state.text} placeholder="Type your answer and click to submit." className="text-left w-full bg-highlight bg-opacity-50 text-base mt-4 p-4 rounded" onChange={(event) => this.setState({ text: event.target.value })} />
-            <div onClick={this.submit} className={`flex flex-col text-left mt-4 text-base w-full rounded bg-opacity-50 bg-${this.state.color} cursor-pointer p-4`}>Feedback:
+            <div onClick={this.submit} className={`flex flex-col text-left mt-4 text-base w-full rounded bg-opacity-350 hover:bg-opacity-75 bg-${this.state.color} cursor-pointer p-4`}>Feedback:
               <p>{this.state.feedback}</p>
             </div>
           </div>
         </div>
+        <p className="text-sm mb-4">Our application can make mistakes. Verify important information.</p>
         <div className="flex justify-center gap-8">
           <button onClick={this.handleLeft}><img src={backward} className="items-center opacity-50 hover:opacity-100" alt="logo" /></button>
           <p>{this.state.selected+1}/{this.state.cards.length}</p>

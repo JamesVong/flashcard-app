@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import logo from '../StudyRush.png';
+import logo from '../Image.png';
 function Landing(){
     const [loggedIn, setLoggedIn] = useState(false);
 
@@ -10,8 +10,8 @@ function Landing(){
           })
     }, []);
     return (
-        <div className="flex flex-col p-32 text-left">
-            <div className="flex justify-center">
+        <div className="flex flex-col sm:p-8 p-32 text-left">
+            <div className="flex">
                 <div>
                     <h1 className=" text-primary font-bold text-left">A study partner at your fingerprints.</h1>
                     <p >Upcoming exams? Get the help you need fast and explore AI-powered studying with Flashcard App.</p>
@@ -20,7 +20,7 @@ function Landing(){
                     </div>
                 </div>
                 <div className="">
-                    <img className="h-[418px] w-[624px]" src={logo}/>
+                    <img className= "" src={logo}/>
                 </div>
             </div>
             <div className="flex gap-4 p-8">

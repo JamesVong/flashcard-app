@@ -3,12 +3,12 @@ import logo from '../StudyRush.png';
 
 
 function Navbar(){
-    const [loggedIn, setLoggedIn] =useState(false);
+    const [loggedIn, setLoggedIn] =useState(true);
     useEffect(() => {
       // redirect if user is not logged in
       fetch('/api/login').then(res => res.json()).then(res => {
-        if(res.loggedIn) 
-          setLoggedIn(true);
+        if(!res.loggedIn) 
+          setLoggedIn(false);
       })
     }, []);
     return ( 

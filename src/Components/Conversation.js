@@ -57,6 +57,7 @@ function Conversation({id}){
             <button onClick={submit} className="bg-primary rounded text-base bg-opacity-70 p-4 hover:bg-opacity-80">Send</button>
           </div>
         </div>
+        <p className="text-sm mb-4">You are currently talking to AI personas, not real humans.</p>
     </div>
 
   )
