@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar.js';
 import Landing from './Components/Landing.js';
 import Home from './Components/Home.js';

@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import forward from '../Forward.png';
-import backward from '../Back.png';
-import line from '../Rectangle.png';
 
 function Group({id}){
   console.log(id);
@@ -18,10 +15,10 @@ function Group({id}){
           window.location ='/';
     });
     fetch('/api/conversation/characters').then(res => res.json()).then(res => setCharacters(res));
-  }, []);
+  }, [id]);
   function submit(){
     const namesArray = selectedCharacters.map(obj => obj.name);
-    if (selectedCharacters.length !=2) return;
+    if (selectedCharacters.length !== 2) return;
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -44,12 +41,12 @@ function Group({id}){
         <div className="flippable flex flex-col md:w-[860px] md:h-[645px] sm:w-[315px] sm:h-[475px] bg-gray shadow bg-opacity-20 p-8">
           <div className="grid md:grid-cols-4 sm:grid-cols-4 content-center gap-4">
           {characters.map(character =>                 
-            <a className={`flex flex-col text-left overflow-scroll bg-highlight bg-opacity-${selectedCharacters.includes(character)?50:100} shadow hover:bg-opacity-50 p-4`} onClick={()=>select(character)}>
+            <div className={`flex flex-col text-left overflow-scroll bg-highlight bg-opacity-${selectedCharacters.includes(character)?50:100} shadow hover:bg-opacity-50 p-4`} onClick={()=>select(character)}>
                 <div className="h-full flex flex-col overflow-hidden">
                     <h5 className="text-2xl  font-bold text-ellipsis">{character.name}</h5>
                     <p className="text-base">{character.description}</p>
                 </div>
-            </a>
+            </div>
           )}
           </div>
           <div className="flex justify-center mt-6">

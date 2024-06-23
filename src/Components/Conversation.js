@@ -1,10 +1,6 @@
 import React, { useEffect, useState,useRef } from 'react';
-import forward from '../Forward.png';
-import backward from '../Back.png';
-import line from '../Rectangle.png';
 
 function Conversation({id}){
-  console.log(id);
   const [input, setInput] = useState("");
   const [messages,setMessages] = useState([]);
   const messagesEndRef = useRef(null);
@@ -20,7 +16,7 @@ function Conversation({id}){
           window.location ='/'
     });
     
-  }, []);
+  }, [id]);
   function scrollToBottom(){
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
@@ -44,16 +40,16 @@ function Conversation({id}){
   return (
     <div className="mt-8">
         <p className="bg-red"></p>
-        <h1 className="text-primary font-bold text-left"></h1>
+        <h1 className="text-primary font-bold text-left">Study Group</h1>
         <div className="flippable flex flex-col md:w-[860px] md:h-[645px] sm:w-[315px] sm:h-[475px] bg-gray shadow bg-opacity-20">
           <div ref={messagesEndRef} className="overflow-scroll">
             {messages.map(message =>                 
-              <a className="flex flex-col text-left overflow-scroll p-4 bg-highlight bg-opacity-50 shadow hover:bg-opacity-100 justify-between">
+              <div className="flex flex-col text-left overflow-scroll p-4 bg-highlight bg-opacity-50 shadow hover:bg-opacity-100 justify-between">
                   <div class="w-full flex flex-col overflow-hidden">
                       <h5 className="mb-2 text-2xl  font-bold text-ellipsis">{message.name}</h5>
                       <p className="text-base">{message.message}</p>
                   </div>
-              </a>
+              </div>
             )}
           </div>
           <div className="flex w-full p-6">

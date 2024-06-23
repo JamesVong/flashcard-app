@@ -76,10 +76,10 @@ class Quiz extends Component {
         .then(data =>{
           let letter = data.feedback[0];
           let color;
-          if(letter=="I"){
+          if(letter==="I"){
             color="red";
           }
-          else if(letter=="C"){
+          else if(letter==="C"){
             color="primary";
           }
           else{
