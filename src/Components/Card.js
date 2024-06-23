@@ -83,7 +83,7 @@ class Card extends Component {
             onClick={this.flip}
             onAnimationEnd={this.resetWobble}
             wobble={this.state.wobble}
-            className="flippable md:w-[750px] md:h-[415px] sm:w-[475px] sm:h-[275px] bg-highlight shadow bg-opacity-35 hover:bg-opacity-50 flex justify-center items-center cursor-pointer"
+            className="flippable md:w-[750px] md:h-[415px] w-[255px] h-[175px] bg-highlight shadow bg-opacity-35 hover:bg-opacity-50 flex justify-center items-center cursor-pointer"
           >
             <p className="text-center">{content}</p>
           </div>

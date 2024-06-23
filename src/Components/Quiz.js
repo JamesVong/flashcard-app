@@ -99,7 +99,7 @@ class Quiz extends Component {
         <h1 className="text-primary font-bold text-left">{deck.name}</h1>
         <div className="grid md:grid-cols-1 sm:grid-cols-1">
           <div
-            className="flippable flex flex-col md:w-[750px] md:h-[415px] sm:w-[475px] sm:h-[275px] bg-highlight shadow bg-opacity-35 p-8"
+            className="flippable flex flex-col md:w-[750px] md:h-[415px] w-[255px] h-[175px] bg-highlight shadow bg-opacity-35 p-8"
           >
             <h2 className="text-center text-2xl">{content}</h2>
             <textarea rows={6} value={this.state.text} placeholder="Type your answer and click to submit." className="text-left w-full bg-highlight bg-opacity-50 text-base mt-4 p-4 rounded" onChange={(event) => this.setState({ text: event.target.value })} />

@@ -72,7 +72,7 @@ def register():
         try:
             user = auth.create_user_with_email_and_password(email, password)
             auth.send_email_verification(user['idToken'])
-            return redirect('/api/login')	
+            return redirect('/login')	
         except Exception as e:
             print(e)
             return redirect('/register')
