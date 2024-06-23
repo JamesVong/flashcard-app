@@ -1,8 +1,12 @@
 import time
+import os
+
 from flask import Flask, redirect, request, session, jsonify
 from firebase import auth
 from flask_cors import CORS
 from flask_session import Session
+
+from werkzeug.utils import secure_filename
 
 from DbManager import DbManager
 from FlashcardChat import FlashcardChat
@@ -93,17 +97,55 @@ db_manager = DbManager()
 db_manager.create_tables()
 flashcard_chat = FlashcardChat()
 
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 @app.route('/api/deck', methods=['POST'])
 def create_deck():
     if not session.get("uid"):
         return jsonify({'error': 'User not logged in'}), 401
-    
-    data = request.json
-    if not data or 'input' not in data:
+
+    text_input = None
+    if 'input' in request.json:
+        text_input = request.json['input']
+    elif 'image' in request.files:
+        file = request.files['image']
+        if file.filename == '':
+            return jsonify({'error': 'No selected file'}), 400
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+            text_input = get_text_from_image(file.filename, file_path)
+            if not text_input:
+                return jsonify({'error': 'Unable to extract text from image'}), 400
+        else:
+            return jsonify({'error': 'Unsupported file type'}), 400
+    else:
         return jsonify({'error': 'Missing required fields'}), 400
 
+    response = create_deck_from_text(text_input)
+    return jsonify(response), 201 if 'deck_id' in response else 400
+
+def get_text_from_image(image_name, image_path):
+    try:
+        return flashcard_chat.readImage(image_name, image_path)
+    except Exception as e:
+        print(f"Error reading image: {e}")
+        return None
+
+def create_deck_from_text(text_input):
     # Generate title and description using Claude 3.5 API
-    title_description_response = flashcard_chat.getTitleAndDescription(data['input'])
+    title_description_response = flashcard_chat.getTitleAndDescription(text_input)
     title_description_lines = title_description_response.split('\n\n')
     title = title_description_lines[0].replace("Title: ", "").strip()
     description = title_description_lines[1].replace("Description: ", "").strip()
@@ -112,7 +154,7 @@ def create_deck():
     deck_id = db_manager.add_deck(session["uid"], title, description)
 
     # Generate flashcards using Claude 3.5 API
-    flashcards_text = flashcard_chat.createFlashcard(data['input'])
+    flashcards_text = flashcard_chat.createFlashcard(text_input)
     
     # Process the flashcards and add them to the deck
     flashcards = flashcards_text.split('\n\n')
@@ -121,10 +163,10 @@ def create_deck():
             concept, detail = flashcard.split('|||')
             db_manager.add_card(deck_id, concept.strip(), detail.strip())
 
-    return jsonify({
+    return {
         'message': 'Deck created successfully',
         'deck_id': deck_id
-    }), 201
+    }
 
 @app.route('/api/feedback', methods=['POST'])
 def provide_feedback():

@@ -29,3 +29,30 @@ class ChatBot():
             ])
 
         return assistant_message
+    
+    def readImage(self, prompt, b64_img, media_type):
+        message = client.messages.create(
+            model=self.model_name,
+            max_tokens=self.default_max_tokens,
+            system=self.system_prompt,
+            messages=[
+                {
+                    "role": "user", 
+                    "content": [
+                        {
+                            "type": "image",
+                            "source": {
+                                "type": "base64",
+                                "media_type": media_type,
+                                "data": b64_img,
+                            }
+                        },  
+                        {
+                            "type": "text",
+                            "text": prompt
+                        }
+                    ]
+                }
+            ]
+        )
+        return message.content[0].text.split('★')[1]
