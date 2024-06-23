@@ -40,9 +40,7 @@ function App() {
             <Route path="/create">
                 <Create/>
             </Route>
-            {/* <Route path="/deck/:id" render={({ match })}>
-              <Card parameter={match.params.id}/>
-            </Route> */}
+            <Route path="/deck/:id" render={({match}) => <Card id={match.params.id}/>}></Route>
           </Switch>
         </BrowserRouter>
       </header>
