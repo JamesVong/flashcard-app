@@ -6,6 +6,7 @@ from flask_session import Session
 
 from DbManager import DbManager
 from FlashcardChat import FlashcardChat
+from StudyGroup import StudyGroup
 
 app = Flask(__name__, static_folder='../build', static_url_path='/')
 
@@ -98,7 +99,7 @@ def create_deck():
         return jsonify({'error': 'User not logged in'}), 401
     
     data = request.json
-    if not data or 'name' not in data or 'input' not in data:
+    if not data or 'input' not in data:
         return jsonify({'error': 'Missing required fields'}), 400
 
     # Generate title and description using Claude 3.5 API
@@ -169,3 +170,59 @@ def get_deck(deck_id):
     if deck is None:
         return jsonify({'error': 'Deck not found or access denied'}), 404
     return jsonify(deck)
+
+@app.route('/api/conversation/create', methods=['POST'])
+def create_conversation():
+    data = request.json
+    if "deck_id" not in data:
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    deck_id = data["deck_id"]
+    deck = db_manager.get_deck(deck_id)
+
+    if deck is None:
+        return jsonify({'error': 'Deck not found or access denied'}), 404
+
+    if not session.get("conversation"):
+        session["conversation"] = {}
+
+    def format_flashcards(data):
+        cards = data.get("cards", [])
+        formatted_cards = []
+        for card in cards:
+            concept = card.get("concept", "")
+            detail = card.get("detail", "")
+            formatted_cards.append(f"{concept}|||{detail}")
+        return formatted_cards
+
+    deck_string = format_flashcards(deck)
+
+    if not session["conversation"][deck_id]:
+        session["conversation"][deck_id] = StudyGroup(deck_string)
+
+        return jsonify({
+            'message': 'Conversation created successfully',
+            'deck_id': deck_id
+        }), 201
+
+    return jsonify({
+        'message': 'Conversation already made',
+        'deck_id': deck_id
+    }), 200
+
+
+@app.route('/api/conversation/<int:deck_id>', methods=['POST'])
+def get_new_message(deck_id):
+    if not session.get("uid"):
+        return jsonify({'error': 'User not logged in'}), 401
+    
+    deck = db_manager.get_deck(deck_id)
+
+    if deck is None:
+        return jsonify({'error': 'Deck not found or access denied'}), 404
+
+    if not session.get("conversation") or not session["conversation"][deck_id]:
+        return jsonify({'error': 'Conversation not found or access denied'}), 404
+    
+    group = session["conversation"][deck_id]
+    
