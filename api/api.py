@@ -171,6 +171,10 @@ def get_deck(deck_id):
         return jsonify({'error': 'Deck not found or access denied'}), 404
     return jsonify(deck)
 
+@app.route('/api/conversation/characters', methods=['GET'])
+def get_characters():
+    return jsonify(StudyGroup.characters), 200
+
 @app.route('/api/conversation/create', methods=['POST'])
 def create_conversation():
     data = request.json
