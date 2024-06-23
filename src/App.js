@@ -9,6 +9,7 @@ import Register from './Components/Register.js';
 import Login from './Components/Login.js';
 import Create from './Components/Create.js';
 import Card from './Components/Card.js';
+import Quiz from './Components/Quiz.js';
 import './App.css';
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
                 <Create/>
             </Route>
             <Route path="/deck/:id" render={({match}) => <Card id={match.params.id}/>}></Route>
+            <Route path="/quiz/:id" render={({match}) => <Quiz id={match.params.id}/>}></Route>
           </Switch>
         </BrowserRouter>
       </header>

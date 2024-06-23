@@ -10,7 +10,8 @@ module.exports = {
             accent:'#61BE6B',
             background:'#141415',
             gray:'#E9E9EA',
-            black:'#000000'
+            black:'#000000',
+            red:'#D63636',
           },
         fontFamily: {
             raleway: ['Raleway', 'sans-serif'],
