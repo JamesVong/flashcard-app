@@ -51,6 +51,10 @@ notes_input = """
 created_flashcards = flashcard_chat.createFlashcard(notes_input)
 print(f"Created Flashcards:\n{created_flashcards}")
 
+# Generate title and description from notes
+title_and_description = flashcard_chat.getTitleAndDescription(notes_input)
+print(f"\nTitle and Description:\n{title_and_description}")
+
 # Test data for feedback
 card_concept = "Efficiency of Insertion Sort"
 card_detail = "Insertion Sort works best for small or mostly sorted arrays and has a time complexity of O(n^2) in the worst case."

@@ -8,9 +8,15 @@ class FlashcardChat():
     def __init__(self):
         create_prompt = get_prompt("./CreatePrompt.txt")
         self.create_flashcard_bot = ChatBot("claude-3-5-sonnet-20240620", create_prompt)
-        
+
+        title_prompt = get_prompt("./CreateTitleAndDescription.txt")
+        self.title_bot = ChatBot("claude-3-5-sonnet-20240620", title_prompt)
+
         feedback_prompt = get_prompt("./FeedbackPrompt.txt")
         self.feedback_bot = ChatBot("claude-3-5-sonnet-20240620", feedback_prompt)
+
+    def getTitleAndDescription(self, text_input):
+        return self.title_bot.chat(text_input, False)
 
     def createFlashcard(self, text_input):
         return self.create_flashcard_bot.chat(text_input, False)

@@ -1,0 +1,12 @@
+Using the provided student notes, you created flashcards by identifying key concepts and their corresponding details. Write the title and description for the deck (Flashcard set) of the notes. The description should be only 1 to 2 sentences long. Only write the title and description for the flashcards in the following format:
+Title: Example Title
+
+Description: Example Description
+
+Example:
+User Input: Insertion Sort is a simple sorting algorithm that builds the final sorted array one item at a time. It is much less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort. Insertion Sort works best for small or mostly sorted arrays and has a time complexity of O(n^2) in the worst case. However, it is stable and works in-place, making it a good choice for small datasets.
+
+Output:
+Title: Insertion Sort Algorithm
+
+Description: Covers the fundamentals of Insertion Sort, including its operation, efficiency, and use cases. Compares Insertion Sort with other sorting algorithms and discusses its advantages for small datasets.

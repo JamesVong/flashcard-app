@@ -98,11 +98,17 @@ def create_deck():
         return jsonify({'error': 'User not logged in'}), 401
     
     data = request.json
-    if not data or 'name' not in data or 'description' not in data or 'input' not in data:
+    if not data or 'name' not in data or 'input' not in data:
         return jsonify({'error': 'Missing required fields'}), 400
 
+    # Generate title and description using Claude 3.5 API
+    title_description_response = flashcard_chat.getTitleAndDescription(data['input'])
+    title_description_lines = title_description_response.split('\n\n')
+    title = title_description_lines[0].replace("Title: ", "").strip()
+    description = title_description_lines[1].replace("Description: ", "").strip()
+    
     # Create the deck
-    deck_id = db_manager.add_deck(session["uid"], data['name'], data['description'])
+    deck_id = db_manager.add_deck(session["uid"], title, description)
 
     # Generate flashcards using Claude 3.5 API
     flashcards_text = flashcard_chat.createFlashcard(data['input'])
