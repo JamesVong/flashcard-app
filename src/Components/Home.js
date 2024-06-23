@@ -20,13 +20,13 @@ function Home(){
             <h1 className="text-primary font-bold text-left">My Decks</h1>
             <div className="grid md:grid-cols-4 sm:grid-cols-2 p-4 gap-4">
                 {decks.map(deck =>                 
-                    <a href="#" className="w-[250px] h-[320px] flex flex-col text-left overflow-scroll p-4 bg-highlight bg-opacity-50 shadow hover:bg-opacity-100 justify-between">
+                    <a href={`/deck/`} className="w-[250px] h-[320px] flex flex-col text-left overflow-scroll p-4 bg-highlight bg-opacity-50 shadow hover:bg-opacity-100 justify-between">
                         <div class="h-full flex flex-col overflow-hidden">
-                            <h5 className="mb-2 text-2xl  font-bold text-ellipsis">{deck.title}</h5>
+                            <h5 className="mb-2 text-2xl  font-bold text-ellipsis">{deck.name}</h5>
                             <p className="text-base">{deck.description}</p>
                         </div>
                         <div className="">
-                            <p className=" text-sm">{deck.length} Cards, Created {deck.date_created}</p>
+                            <p className=" text-sm">{deck.card_count} Cards, Created {deck.last_edited}</p>
                         </div>
                     </a>
                 )}

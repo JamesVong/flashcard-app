@@ -8,6 +8,7 @@ import FrogotPage from './Components/Frogot.js';
 import Register from './Components/Register.js';
 import Login from './Components/Login.js';
 import Create from './Components/Create.js';
+import Card from './Components/Card.js';
 import './App.css';
 
 function App() {
@@ -39,6 +40,9 @@ function App() {
             <Route path="/create">
                 <Create/>
             </Route>
+            {/* <Route path="/deck/:id" render={({ match })}>
+              <Card parameter={match.params.id}/>
+            </Route> */}
           </Switch>
         </BrowserRouter>
       </header>
