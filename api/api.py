@@ -125,6 +125,26 @@ def create_deck():
         'deck_id': deck_id
     }), 201
 
+@app.route('/api/feedback', methods=['POST'])
+def provide_feedback():
+    if not session.get("uid"):
+        return jsonify({'error': 'User not logged in'}), 401
+
+    data = request.json
+    if not data or 'card_concept' not in data or 'card_detail' not in data or 'user_response' not in data:
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    card_concept = data['card_concept']
+    card_detail = data['card_detail']
+    user_response = data['user_response']
+
+    # Get feedback using Claude 3.5 API
+    feedback = flashcard_chat.feedback(card_concept, card_detail, user_response)
+
+    return jsonify({
+        'feedback': feedback
+    }), 200
+
 @app.route('/api/decks', methods=['GET'])
 def get_user_decks():
     if not session.get("uid"):
