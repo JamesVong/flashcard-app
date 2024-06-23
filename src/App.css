@@ -694,6 +694,10 @@ video {
   flex-wrap: wrap;
 }
 
+.content-center {
+  align-content: center;
+}
+
 .items-center {
   align-items: center;
 }
@@ -808,6 +812,18 @@ video {
   --tw-bg-opacity: 0.7;
 }
 
+.bg-opacity-100 {
+  --tw-bg-opacity: 1;
+}
+
+.bg-opacity-0 {
+  --tw-bg-opacity: 0;
+}
+
+.bg-opacity-20 {
+  --tw-bg-opacity: 0.2;
+}
+
 .p-10 {
   padding: 2.5rem;
 }
@@ -818,6 +834,10 @@ video {
 
 .p-8 {
   padding: 2rem;
+}
+
+.p-6 {
+  padding: 1.5rem;
 }
 
 .px-3 {
@@ -1045,6 +1065,18 @@ video {
     height: 275px;
   }
 
+  .sm\:h-\[975px\] {
+    height: 975px;
+  }
+
+  .sm\:h-\[575px\] {
+    height: 575px;
+  }
+
+  .sm\:h-\[475px\] {
+    height: 475px;
+  }
+
   .sm\:w-\[400px\] {
     width: 400px;
   }
@@ -1055,6 +1087,22 @@ video {
 
   .sm\:w-full {
     width: 100%;
+  }
+
+  .sm\:w-\[275px\] {
+    width: 275px;
+  }
+
+  .sm\:w-\[255px\] {
+    width: 255px;
+  }
+
+  .sm\:w-\[215px\] {
+    width: 215px;
+  }
+
+  .sm\:w-\[315px\] {
+    width: 315px;
   }
 
   .sm\:max-w-md {
@@ -1071,6 +1119,10 @@ video {
 
   .sm\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .sm\:text-sm {
@@ -1096,6 +1148,34 @@ video {
     height: 415px;
   }
 
+  .md\:h-\[815px\] {
+    height: 815px;
+  }
+
+  .md\:h-\[615px\] {
+    height: 615px;
+  }
+
+  .md\:h-\[\] {
+    height: ;
+  }
+
+  .md\:h-\[845\] {
+    height: 845;
+  }
+
+  .md\:h-\[845px\] {
+    height: 845px;
+  }
+
+  .md\:h-\[745px\] {
+    height: 745px;
+  }
+
+  .md\:h-\[645px\] {
+    height: 645px;
+  }
+
   .md\:w-\[750px\] {
     width: 750px;
   }
@@ -1106,6 +1186,30 @@ video {
 
   .md\:w-auto {
     width: auto;
+  }
+
+  .md\:w-\[450px\] {
+    width: 450px;
+  }
+
+  .md\:w-\[550px\] {
+    width: 550px;
+  }
+
+  .md\:w-\[760px\] {
+    width: 760px;
+  }
+
+  .md\:w-\[660px\] {
+    width: 660px;
+  }
+
+  .md\:w-\[560px\] {
+    width: 560px;
+  }
+
+  .md\:w-\[860px\] {
+    width: 860px;
   }
 
   .md\:grid-cols-1 {

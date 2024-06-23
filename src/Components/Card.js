@@ -78,7 +78,7 @@ class Card extends Component {
     return (
       <div className="mt-10">
         <h1 className="text-primary font-bold text-left">{deck.name}</h1>
-        <div className="grid md:grid-cols-1 sm:grid-cols-1 p-4">
+        <div className="grid md:grid-cols-1 sm:grid-cols-1">
           <div
             onClick={this.flip}
             onAnimationEnd={this.resetWobble}

@@ -10,6 +10,8 @@ import Login from './Components/Login.js';
 import Create from './Components/Create.js';
 import Card from './Components/Card.js';
 import Quiz from './Components/Quiz.js';
+import Group from './Components/Group.js';
+import Conversation from './Components/Conversation.js';
 import './App.css';
 
 function App() {
@@ -43,6 +45,8 @@ function App() {
             </Route>
             <Route path="/deck/:id" render={({match}) => <Card id={match.params.id}/>}></Route>
             <Route path="/quiz/:id" render={({match}) => <Quiz id={match.params.id}/>}></Route>
+            <Route path="/group/:id" render={({match}) => <Group id={match.params.id}/>}></Route>
+            <Route path="/conversation/:id" render={({match}) => <Conversation id={match.params.id}/>}></Route>
           </Switch>
         </BrowserRouter>
       </header>

@@ -118,7 +118,6 @@ class Quiz extends Component {
             <a className="bg-highlight p-4 hover:bg-opacity-50 rounded" href={`/deck/${this.state.id}`}>Practice</a>
             <a className="bg-primary p-4 hover:bg-opacity-50 rounded" href={`/group/${this.state.id}`} >AI Study Group</a>
         </div>
-        
       </div>
     );
   }

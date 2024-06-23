@@ -253,23 +253,37 @@ def create_conversation():
     }), 201
 
 
-@app.route('/api/conversation/<int:deck_id>', methods=['POST'])
+@app.route('/api/conversation/<string:deck_id>', methods=['POST','GET'])
 def get_new_message(deck_id):
-    if not session.get("uid"):
-        return jsonify({'error': 'User not logged in'}), 401
-    
-    data = request.json
-    deck = db_manager.get_deck(deck_id)
+    if request.method == 'POST':
+        if not session.get("uid"):
+            return jsonify({'error': 'User not logged in'}), 401
+        
+        data = request.json
+        deck = db_manager.get_deck(deck_id)
 
-    if 'input' not in data:
-        return jsonify({'error': 'Missing required fields'}), 400
+        if 'input' not in data:
+            return jsonify({'error': 'Missing required fields'}), 400
 
-    if deck is None:
-        return jsonify({'error': 'Deck not found or access denied'}), 404
+        if deck is None:
+            return jsonify({'error': 'Deck not found or access denied'}), 404
 
-    if not session.get("conversation") or deck_id not in session["conversation"]:
-        return jsonify({'error': 'Conversation not found or access denied'}), 404
-    
-    group = session["conversation"][deck_id]
-    return jsonify(group.userMessage(data['input']))
+        if not session.get("conversation") or deck_id not in session["conversation"]:
+            return jsonify({'error': 'Conversation not found or access denied'}), 404
+        
+        group = session["conversation"][deck_id]
+        return jsonify(group.userMessage(data['input']))
+    else:
+        if not session.get("uid"):
+            return jsonify({'error': 'User not logged in'}), 401
+        
+        deck = db_manager.get_deck(deck_id)
+        if deck is None:
+            return jsonify({'error': 'Deck not found or access denied'}), 404
+            
+        if not session.get("conversation") or deck_id not in session["conversation"]:
+            return jsonify({'error': 'Conversation not found or access denied'}), 404
+        
+        group = session["conversation"][deck_id]
+        return jsonify(group.formatMessages()),200
 
