@@ -122,7 +122,8 @@ study_group = StudyGroup(deck_string, characters)
 # Continuous loop to get user messages and print responses
 while True:
     user_input = input("[You] \n")
+    print("\n")
     if user_input.lower() in ["exit", "quit"]:
         print("Exiting study session.")
         break
-    study_group.userMessage(user_input)
+    print(study_group.userMessage(user_input))

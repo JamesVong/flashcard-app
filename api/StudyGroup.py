@@ -59,5 +59,31 @@ class StudyGroup:
         self.conversationBot = ChatBot("claude-3-5-sonnet-20240620", conversation_prompt)
 
     def userMessage(self, message):
-        output = self.conversationBot.chat(message, True)
-        print(output)
+        self.conversationBot.chat(message, True)
+        formatted_messages = self.formatMessages()
+        return formatted_messages
+
+    def formatMessages(self):
+        formatted_messages = []
+        for entry in self.conversationBot.messages:
+            if entry['role'] == 'user':
+                formatted_messages.append({
+                    "name": "User",
+                    "message": entry['content']
+                })
+            elif entry['role'] == 'assistant':
+                segments = entry['content'].split('\n\n')
+                current_speaker = ""
+                for segment in segments:
+                    if segment.startswith('[') and ']' in segment:
+                        current_speaker = segment.split(']')[0][1:]
+                        message = segment.split(']')[1].strip()
+                    else:
+                        message = segment.strip()
+                    if current_speaker:
+                        formatted_messages.append({
+                            "name": current_speaker,
+                            "message": message
+                        })
+        return formatted_messages
+        

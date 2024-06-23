@@ -174,10 +174,11 @@ def get_deck(deck_id):
 @app.route('/api/conversation/create', methods=['POST'])
 def create_conversation():
     data = request.json
-    if "deck_id" not in data:
+    if "deck_id" not in data or "characters" not in data:
         return jsonify({'error': 'Missing required fields'}), 400
 
     deck_id = data["deck_id"]
+    characters = data["characters"]
     deck = db_manager.get_deck(deck_id)
 
     if deck is None:
@@ -197,18 +198,13 @@ def create_conversation():
 
     deck_string = format_flashcards(deck)
 
-    if not session["conversation"][deck_id]:
-        session["conversation"][deck_id] = StudyGroup(deck_string)
-
-        return jsonify({
-            'message': 'Conversation created successfully',
-            'deck_id': deck_id
-        }), 201
+    # Can overwrite the last conversation of the deck if you want to select new characters
+    session["conversation"][deck_id] = StudyGroup(deck_string, characters)
 
     return jsonify({
-        'message': 'Conversation already made',
+        'message': 'Conversation created successfully',
         'deck_id': deck_id
-    }), 200
+    }), 201
 
 
 @app.route('/api/conversation/<int:deck_id>', methods=['POST'])
@@ -216,13 +212,18 @@ def get_new_message(deck_id):
     if not session.get("uid"):
         return jsonify({'error': 'User not logged in'}), 401
     
+    data = request.json
     deck = db_manager.get_deck(deck_id)
+
+    if 'input' not in data:
+        return jsonify({'error': 'Missing required fields'}), 400
 
     if deck is None:
         return jsonify({'error': 'Deck not found or access denied'}), 404
 
-    if not session.get("conversation") or not session["conversation"][deck_id]:
+    if not session.get("conversation") or deck_id not in session["conversation"]:
         return jsonify({'error': 'Conversation not found or access denied'}), 404
     
     group = session["conversation"][deck_id]
-    
+    return jsonify(group.userMessage(data['input']))
+
