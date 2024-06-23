@@ -1083,6 +1083,10 @@ video {
   .xl\:p-0 {
     padding: 0px;
   }
+
+  .xl\:p-4 {
+    padding: 1rem;
+  }
 }
 
 .rtl\:space-x-reverse:where([dir="rtl"], [dir="rtl"] *) > :not([hidden]) ~ :not([hidden]) {
