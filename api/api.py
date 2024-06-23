@@ -140,3 +140,12 @@ def get_deck_cards(deck_id):
     if cards is None:
         return jsonify({'error': 'Deck not found or access denied'}), 404
     return jsonify(cards)
+
+@app.route('/api/deck/<int:deck_id>', methods=['GET'])
+def get_deck(deck_id):
+    if not session.get("uid"):
+        return jsonify({'error': 'User not logged in'}), 401
+    deck = db_manager.get_deck(deck_id)
+    if deck is None:
+        return jsonify({'error': 'Deck not found or access denied'}), 404
+    return jsonify(deck)

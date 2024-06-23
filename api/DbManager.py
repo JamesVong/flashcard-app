@@ -47,6 +47,20 @@ class DbManager:
                 'card_count': card_count
             } for deck, card_count in decks_with_count]
 
+    def get_deck(self, deck_id):
+        with self.Session() as session:
+            deck = session.query(Deck).filter(Deck.id == deck_id).first()
+            if deck:
+                return {
+                    'id': deck.id,
+                    'name': deck.name,
+                    'description': deck.description,
+                    'last_edited': deck.last_edited,
+                    'cards': [{'id': card.id, 'concept': card.concept, 'detail': card.detail} for card in deck.cards],
+                    'conversations': [{'id': conv.id, 'title': conv.title, 'characters': conv.characters} for conv in deck.conversations]
+                }
+            return None
+
     # Card methods
     def add_card(self, deck_id, concept, detail):
         with self.Session() as session:
