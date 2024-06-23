@@ -4,7 +4,7 @@ import Navbar from './Components/Navbar.js';
 import Landing from './Components/Landing.js';
 import Home from './Components/Home.js';
 import Flashcards from './Components/Flashcards.js';
-import FrogotPage from './Components/Frogot.js';
+import ForgotPage from './Components/Forgot.js';
 import Register from './Components/Register.js';
 import Login from './Components/Login.js';
 import Create from './Components/Create.js';
@@ -29,7 +29,7 @@ function App() {
                 <Home/>
             </Route>
             <Route path="/forgot">
-                <FrogotPage/>
+                <ForgotPage/>
             </Route>
             <Route path="/register">
                 <Register/>
